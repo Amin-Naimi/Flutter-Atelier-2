@@ -5,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -31,18 +30,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
- Icon _heart = Icon(Icons.favorite_border, color: Colors.red);
-  bool checkLike = false;
-
+  Icon _heartIcon = Icon(Icons.favorite_border, color: Colors.white);
+  bool _checkLike = false;
 
   void _likeThis() {
     setState(() {
-      if (checkLike) {
-        _heart = Icon( Icons.favorite_border, color: Colors.red);
-        checkLike = false;
+      if (_checkLike) {
+        _heartIcon = Icon(Icons.favorite_border, color: Colors.white);
+        _checkLike = false;
       } else {
-        _heart = Icon(Icons.favorite, color: Colors.red);
-        checkLike = true;
+        _heartIcon = Icon(Icons.favorite, color: Colors.white);
+        _checkLike = true;
       }
     });
   }
@@ -51,9 +49,43 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[IconButton(onPressed: _likeThis, icon: _heart)],
-        title: const Text("Test Title"),
-        backgroundColor: Colors.blue,
+        title: Text(widget.title),
+        backgroundColor: Colors.indigoAccent,
+        actions: <Widget>[
+          IconButton(onPressed: _likeThis, icon: _heartIcon),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _likeThis,
+        backgroundColor: Colors.indigoAccent,
+        child: _heartIcon,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.indigoAccent,
+        shape: const CircularNotchedRectangle(),
+        child: Container(
+          height: 50,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children:  <Widget>[
+              IconButton(
+                  onPressed: null,
+                  icon: Icon(
+                    Icons.add_location_alt,
+                    color: Colors.white,
+                  ),
+              ),
+              IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.east,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
