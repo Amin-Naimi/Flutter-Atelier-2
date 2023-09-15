@@ -30,17 +30,44 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Icon _heartIcon = Icon(Icons.favorite_border, color: Colors.white);
+  Icon _heartIcon = const Icon(Icons.favorite_border, color: Colors.white);
   bool _checkLike = false;
+  int _selectedIndex = 0;
+  String _dispalay = "Défault: Home view ";
 
   void _likeThis() {
     setState(() {
       if (_checkLike) {
-        _heartIcon = Icon(Icons.favorite_border, color: Colors.white);
+        _heartIcon = const Icon(Icons.favorite_border, color: Colors.white);
         _checkLike = false;
       } else {
-        _heartIcon = Icon(Icons.favorite, color: Colors.white);
+        _heartIcon = const Icon(Icons.favorite, color: Colors.white);
         _checkLike = true;
+      }
+    });
+  }
+
+  void _clickedItem(int index) {
+    _selectedIndex = index;
+    setState(() {
+      switch (_selectedIndex) {
+        case 0:
+          {
+            _dispalay = "$_selectedIndex: Accueil view ";
+          }
+          break;
+        case 1:
+          {
+            _dispalay = "$_selectedIndex: Paramétre view ";
+          }
+          break;
+        case 2:
+          {
+            _dispalay = "$_selectedIndex: Compte view ";
+          }
+          break;
+        default:
+          _selectedIndex = _selectedIndex;
       }
     });
   }
@@ -55,13 +82,55 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(onPressed: _likeThis, icon: _heartIcon),
         ],
       ),
+/********************************************************************/
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            _dispalay,
+            style: TextStyle(color: Colors.indigo, fontSize: 40),
+          )
+        ],
+      )),
+/********************************************************************/
+
       floatingActionButton: FloatingActionButton(
         onPressed: _likeThis,
         backgroundColor: Colors.indigoAccent,
         child: _heartIcon,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+/********************************************************************/
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.indigo,
+        currentIndex: _selectedIndex, //l'element selectionner par default
+        onTap: _clickedItem,
+
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.white),
+            label: 'Accueil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Colors.white),
+            label: 'Paramètres',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.white,
+            ),
+            label: 'compte',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/*bottomNavigationBar: BottomAppBar(
         color: Colors.indigoAccent,
         shape: const CircularNotchedRectangle(),
         child: Container(
@@ -86,7 +155,4 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
+      ),*/
